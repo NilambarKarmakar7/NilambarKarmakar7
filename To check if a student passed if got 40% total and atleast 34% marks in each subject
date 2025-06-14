@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main() {
+    int m1, m2, m3;
+    printf("Enter the marks of 1st subject: ");
+    scanf("%d", &m1);
+    printf("Enter the marks of 2nd subject: ");
+    scanf("%d", &m2);
+    printf("Enter the marks of 3rd subject: ");
+    scanf("%d", &m3);
+    if ((((m1+m2+m3)/300.0 * 100)>=40) && m1>=33 && m2>=33 && m3>=33) {
+        printf("Passed");
+    }
+    else {
+        printf("Failed");
+    }
+    return 0;
+}

@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main() {
+    int i=1, product=1;
+    printf("Enter the number: ");
+    int num;
+    scanf("%d", &num);
+    for (i=1;i<=num;i++) {
+        product*=i;
+        
+    }
+    printf("Factorial is %d", product);
+
+    return 0;
+}

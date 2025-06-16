@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    // Seed the random number generator
+    srand(time(0));
+
+    // Generate random number between 1 and 3
+    int computer_score=0, user_score=0, user_choice, rounds, i=1;
+    printf("No of rounds: ");
+    scanf("%d", &rounds);
+    while (i<=rounds) {
+        printf("\nRound %d", i);
+        printf("\nEnter your choice (1. Rock 2. Paper 3. Scissors): ");
+        scanf("%d", &user_choice);
+        int computer_choice = (rand() % 3) + 1;
+        printf("Computer choose: %d\n", computer_choice);
+        if (user_choice==computer_choice) {
+            printf("It's a tie. TRY AGAIN\n");
+            
+        }
+        else if ((user_choice==1 && computer_choice==3) || (user_choice==2 && computer_choice==1) || (user_choice==3 && computer_choice==2)) {
+            printf("YOU WON!!\n");
+            user_score++;
+        }
+        else {
+            printf("Computer Won. BETTER LUCK NEXT TIME\n");
+            computer_score++;
+        }
+    i++;
+    }
+    printf("\nScore: YOU %d, COMPUTER %d",user_score,computer_score);
+    return 0;
+}

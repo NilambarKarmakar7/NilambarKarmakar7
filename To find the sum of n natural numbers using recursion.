@@ -1,0 +1,20 @@
+// to find sum of n natural numbers using recursion
+
+#include <stdio.h>
+
+int sum(int);
+
+int sum(int n) {
+    if (n==1) {
+        return 1;
+    }
+    int sumN = sum(n-1) + n;
+    return sumN;
+}
+int main() {
+    int num;
+    printf("enter the natural to find the sum up to that: ");
+    scanf("%d", &num);
+    printf("The sum of %d natural numbers is %d",num, sum(num));
+    
+}

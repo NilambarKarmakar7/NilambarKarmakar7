@@ -1,0 +1,31 @@
+// to print in terms of fibonnaci sequence.
+
+#include <stdio.h>
+
+void fibonnaci(int);
+
+void fibonnaci(int num) {
+int a1=0, a2=1, i=1, temp;
+    if (num<=0) {
+        printf("plese enter a positive number: ");
+        return;
+    }
+    
+    printf("The Fibonacci sequence is: ");
+     
+    while (i<=num) {
+        printf("%d ", a1);
+        temp= a1 + a2;
+        a1 = a2;
+        a2 = temp;
+        i++;
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of terms: ");
+    scanf("%d", &n);
+    fibonnaci(n);
+    return 0;     
+}

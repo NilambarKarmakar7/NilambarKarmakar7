@@ -16,5 +16,6 @@ int main() {
     printf("enter the natural to find the sum up to that: ");
     scanf("%d", &num);
     printf("The sum of %d natural numbers is %d",num, sum(num));
-    
+
+		 return 0;    
 }

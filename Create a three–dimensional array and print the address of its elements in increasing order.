@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+int main() {
+    
+    int arr[2][2][2];
+    
+    printf("Enter 8 values for a 2x2x2 3D array :\n");
+    for (int i =0; i<2; i++) {
+        for (int j =0 ;j<2; j++) {
+           for (int k = 0; k<2; k++) {
+               printf("Enter value for arr[%d][%d][%d]: ", i, j, k);
+                scanf("%d", &arr[i][j][k]);
+           }
+        }
+    }
+    
+    for (int i =0; i<2; i++) {
+        for (int j =0 ;j<2; j++) {
+           for (int k = 0; k<2; k++) {
+               printf("The value of arr[i][j][k] is %d\n", arr[i][j][k]);
+
+           }
+        }
+    printf("\n");    
+    }
+    
+    for (int i =0; i<2; i++) {
+        for (int j =0 ;j<2; j++) {
+           for (int k = 0; k<2; k++) {
+               printf("%u  ", &arr[i][j][k]);
+           }
+        }
+    }
+    return 0;
+}

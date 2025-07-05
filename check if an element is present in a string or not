@@ -1,0 +1,21 @@
+#include <stdio.h>
+void check(char str1[], char c);
+int main() {
+    // Write C code here
+    char str[4]="You";
+    char ch = 'o';
+    check(str, ch);
+    return 0;
+}
+void check(char str1[], char c) {
+    int found=0;
+    for (int i = 0; str1[i] != '\0'; i++) {
+        if (str1[i]==c) {
+            printf("present\n");
+            found =1;
+            break;
+        }
+    } if (found!=1) {
+        printf("Not present");
+    }
+}

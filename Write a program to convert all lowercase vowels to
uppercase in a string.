@@ -1,0 +1,22 @@
+#include <stdio.h>
+void up(char st[]);
+int main() {
+    printf("Enter a word or sentence: ");
+    char str[500];
+    fgets(str, 500, stdin);
+    up(str);
+    printf("vowels in uppercase gives: %s", str);
+
+    return 0;
+}
+
+void up(char st[])
+{
+    for (int i = 0; st[i] != '\0'; i++)
+    {
+        if (st[i]=='a' || st[i]=='e' || st[i]=='i' || st[i]=='o' || st[i]=='u')
+        {
+        st[i] = st[i] - 32;
+        }
+    } 
+}

@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+struct date {
+    int dd;
+    int mm;
+    int yyyy;
+};
+
+void compare(struct date n1, struct date n2) {
+    if (n1.yyyy > n2.yyyy) {
+        printf("Date 1 (%02d-%02d-%d) is greater.\n", n1.dd, n1.mm, n1.yyyy);
+    } else if (n2.yyyy > n1.yyyy) {
+        printf("Date 2 (%02d-%02d-%d) is greater.\n", n2.dd, n2.mm, n2.yyyy);
+    } else {
+        // Same year
+        if (n1.mm > n2.mm) {
+            printf("Date 1 (%02d-%02d-%d) is greater.\n", n1.dd, n1.mm, n1.yyyy);
+        } else if (n2.mm > n1.mm) {
+            printf("Date 2 (%02d-%02d-%d) is greater.\n", n2.dd, n2.mm, n2.yyyy);
+        } else {
+            // Same month
+            if (n1.dd > n2.dd) {
+                printf("Date 1 (%02d-%02d-%d) is greater.\n", n1.dd, n1.mm, n1.yyyy);
+            } else if (n2.dd > n1.dd) {
+                printf("Date 2 (%02d-%02d-%d) is greater.\n", n2.dd, n2.mm, n2.yyyy);
+            } else {
+                printf("Both dates are the same.\n");
+            }
+        }
+    }
+}
+
+int main() {
+    struct date n1, n2;
+
+    printf("Enter Date 1 (dd mm yyyy): ");
+    scanf("%d %d %d", &n1.dd, &n1.mm, &n1.yyyy);
+
+    printf("Enter Date 2 (dd mm yyyy): ");
+    scanf("%d %d %d", &n2.dd, &n2.mm, &n2.yyyy);
+
+    compare(n1, n2);
+
+    return 0;
+}

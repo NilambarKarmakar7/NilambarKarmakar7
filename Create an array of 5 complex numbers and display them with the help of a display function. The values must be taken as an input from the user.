@@ -1,0 +1,24 @@
+#include <stdio.h>
+struct Complex {
+    int real ;
+    int imaginary;
+};
+void display(struct Complex c) {
+    printf("Complex number: %d + %di\n", c.real, c.imaginary);
+}
+int main() {
+   struct Complex arr[5];
+   for (int i = 0 ; i<5 ; i++) 
+   {
+       printf("\nEnter the real part of complex number %d : ", i+1);
+       scanf("%d", &arr[i].real);
+       printf("Enter the complex part of complex number %d : ", i+1);
+       scanf("%d", &arr[i].imaginary);
+   }
+   printf("\nDisplaying complex numbers:\n");
+    for (int i = 0; i < 5; i++)
+    {
+        display(arr[i]);
+    }
+    return 0;
+}

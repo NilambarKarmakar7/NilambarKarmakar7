@@ -19,10 +19,16 @@ int ind_insert(int arr[],int element, int ind, int total_size, int used_size) {
 int main() {
     int arr[100] = {7, 8, 12, 27, 88};
     int size=5;
+    printf("Array before updation : ");
     display(arr, size);
-    int element=43, ind=2, total_size=100, used_size=5;
+    int element, ind, total_size=100, used_size=5;
+    printf("Enter element that to be inserted : ");
+    scanf("%d", &element);
+    printf("Enter index at which is to be inserted : ");
+    scanf("%d", &ind);
     ind_insert(arr, element, ind, total_size, used_size);
     size +=1;
+    printf("Array after updation : ");
     display(arr, size);
     return 0;
 }

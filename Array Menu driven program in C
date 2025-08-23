@@ -1,0 +1,85 @@
+#include <stdio.h>
+
+void display(int arr[], int used_size){
+    if (used_size == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+    for (int i = 0; i < used_size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+void insertion(int arr[], int arr_size, int* used_size, int element, int index){
+    if (*used_size >= arr_size) {
+        printf("Array is full. Insertion not possible\n");
+        return;
+    }
+    if (index < 0 || index > *used_size) {
+        printf("Invalid index\n");
+        return;
+    }
+    for (int i = *used_size - 1; i >= index; i--) {
+        arr[i + 1] = arr[i];
+    }
+    arr[index] = element;
+    (*used_size)++;
+    printf("Inserted %d at index %d\n", element, index);
+}
+
+void deletion(int arr[], int *used_size, int arr_size, int index){
+    if (*used_size == 0) {
+        printf("Array is empty. Deletion not possible\n");
+        return;
+    }
+    if (index < 0 || index >= *used_size) {
+        printf("Invalid index\n");
+        return;
+    }
+    int deleted_element = arr[index];
+    for (int i = index; i < *used_size - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    (*used_size)--; 
+    printf("Deleted element: %d\n", deleted_element);
+}
+
+int main() {
+    int arr[100];
+    int used_size = 0;
+    int arr_size = 100;
+    int choice, element, index;
+
+    while (1) {
+        printf("\n--- Menu ---\n");
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Display\n");
+        printf("4. Quit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter element to insert: ");
+                scanf("%d", &element);
+                printf("Enter index (0 to %d): ", used_size);
+                scanf("%d", &index);
+                insertion(arr, arr_size, &used_size, element, index);
+                break;
+            case 2:
+                printf("Enter index to delete (0 to %d): ", used_size - 1);
+                scanf("%d", &index);
+                deletion(arr, &used_size, arr_size, index);
+                break;
+            case 3:
+                display(arr, used_size);
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}

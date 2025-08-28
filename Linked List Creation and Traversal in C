@@ -1,29 +1,198 @@
-#include <stdio.h>
-#include <stdlib.h>
-struct Node{
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node {
     int data;
     struct Node* next;
 };
-void traverse (struct Node* ptr){
-    while (ptr!=NULL){
-        printf("Element : %d\n", ptr->data);
+
+void linkedListTraversal(struct Node* ptr) {
+    if (ptr == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    while (ptr != NULL) {
+        printf("%d -> ", ptr->data);
         ptr = ptr->next;
     }
+    printf("NULL\n");
 }
-int main() {
-    struct Node* head;
-    struct Node* second;
-    struct Node* third;
-    head = (struct Node*)malloc(sizeof(struct Node));
-    second = (struct Node*)malloc(sizeof(struct Node));
-    third= (struct Node*)malloc(sizeof(struct Node));
-    head->data = 33;
-    head->next = second;
-    second->data = 24;
-    second->next=third;
-    third->data = 82;
-    third->next = NULL;
-    traverse(head);
 
+struct Node* createList(int n) {
+    if (n <= 0) return NULL;
+    struct Node* head = NULL, *temp, *newNode;
+    int data, i;
+    printf("Enter data for node 1: ");
+    scanf("%d", &data);
+    head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = data;
+    head->next = NULL;
+    temp = head;
+    for (i = 2; i <= n; i++) {
+        printf("Enter data for node %d: ", i);
+        scanf("%d", &data);
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = data;
+        newNode->next = NULL;
+        temp->next = newNode;
+        temp = temp->next;
+    }
+    return head;
+}
+
+struct Node* insertNode(struct Node* head, int data, int choice, int index) {
+    struct Node* ptr = (struct Node*)malloc(sizeof(struct Node));
+    ptr->data = data;
+    if (choice == 1) {
+        ptr->next = head;
+        head = ptr;
+    } 
+    else if (choice == 2) {
+        struct Node* p = head;
+        int i = 0;
+        while (i != index - 1 && p->next != NULL) {
+            p = p->next;
+            i++;
+        }
+        ptr->next = p->next;
+        p->next = ptr;
+    } 
+    else if (choice == 3) {
+        if (head == NULL) {
+            ptr->next = NULL;
+            return ptr;
+        }
+        struct Node* p = head;
+        while (p->next != NULL) {
+            p = p->next;
+        }
+        p->next = ptr;
+        ptr->next = NULL;
+    }
+    return head;
+}
+
+struct Node* deleteNode(struct Node* head, int choice, int index) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return head;
+    }
+    if (choice == 1) {
+        struct Node* ptr = head;
+        head = head->next;
+        free(ptr);
+    } 
+    else if (choice == 2) {
+        if (index == 0) return deleteNode(head, 1, 0);
+        struct Node* p = head;
+        struct Node* q = head->next;
+        int i = 0;
+        while (i != index - 1 && q->next != NULL) {
+            p = p->next;
+            q = q->next;
+            i++;
+        }
+        p->next = q->next;
+        free(q);
+    } 
+    else if (choice == 3) {
+        if (head->next == NULL) {
+            free(head);
+            return NULL;
+        }
+        struct Node* p = head;
+        struct Node* q = head->next;
+        while (q->next != NULL) {
+            p = p->next;
+            q = q->next;
+        }
+        p->next = NULL;
+        free(q);
+    }
+    return head;
+}
+
+void countNodes(struct Node* head) {
+    int count = 0;
+    struct Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    printf("Total nodes: %d\n", count);
+}
+
+void searchNode(struct Node* head, int key) {
+    int index = 0;
+    struct Node* temp = head;
+    while (temp != NULL) {
+        if (temp->data == key) {
+            printf("Element %d found at index %d\n", key, index);
+            return;
+        }
+        temp = temp->next;
+        index++;
+    }
+    printf("Element %d not found\n", key);
+}
+
+int main() {
+    struct Node* head = NULL;
+    int choice, subChoice, n, data, index, key;
+    do {
+        printf("\nMain Menu:\n");
+        printf("1. Create List\n");
+        printf("2. Insert\n");
+        printf("3. Delete\n");
+        printf("4. Display\n");
+        printf("5. Count\n");
+        printf("6. Search\n");
+        printf("7. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter number of nodes: ");
+                scanf("%d", &n);
+                head = createList(n);
+                break;
+            case 2:
+                printf("\nInsert Menu:\n1. At Beginning\n2. At Index\n3. At End\nEnter choice: ");
+                scanf("%d", &subChoice);
+                printf("Enter data: ");
+                scanf("%d", &data);
+                if (subChoice == 2) {
+                    printf("Enter index: ");
+                    scanf("%d", &index);
+                } else index = 0;
+                head = insertNode(head, data, subChoice, index);
+                break;
+            case 3:
+                printf("\nDelete Menu:\n1. First Node\n2. At Index\n3. Last Node\nEnter choice: ");
+                scanf("%d", &subChoice);
+                if (subChoice == 2) {
+                    printf("Enter index: ");
+                    scanf("%d", &index);
+                } else index = 0;
+                head = deleteNode(head, subChoice, index);
+                break;
+            case 4:
+                linkedListTraversal(head);
+                break;
+            case 5:
+                countNodes(head);
+                break;
+            case 6:
+                printf("Enter element to search: ");
+                scanf("%d", &key);
+                searchNode(head, key);
+                break;
+            case 7:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice!\n");
+        }
+    } while (choice != 7);
     return 0;
 }

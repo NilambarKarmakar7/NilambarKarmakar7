@@ -1,0 +1,235 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define node structure
+typedef struct Node {
+    int data;
+    struct Node* next;
+} node;
+
+// Create circular linked list with n nodes
+node* createList(int n) {
+    int i;
+    node* head = NULL;
+    node* tmp = NULL;
+    node* p = NULL;
+
+    for (i = 0; i < n; i++) {
+        tmp = (node*)malloc(sizeof(node));
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &(tmp->data));
+
+        if (head == NULL) {
+            head = tmp;
+            tmp->next = head;
+        } else {
+            p = head;
+            while (p->next != head) {
+                p = p->next;
+            }
+            p->next = tmp;
+            tmp->next = head;
+        }
+    }
+    return head;
+}
+
+// Traversal
+void display(node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    node* p = head;
+    printf("Circular Linked List: ");
+    do {
+        printf("%d -> ", p->data);
+        p = p->next;
+    } while (p != head);
+    printf("(back to head)\n");
+}
+
+// Insert at beginning
+node* add_at_beg(node* head, int data) {
+    node* ptr = (node*)malloc(sizeof(node));
+    ptr->data = data;
+
+    if (head == NULL) {
+        ptr->next = ptr;
+        return ptr;
+    } else {
+        node* p = head;
+        while (p->next != head) {
+            p = p->next;
+        }
+        p->next = ptr;
+        ptr->next = head;
+        head = ptr;
+    }
+    return head;
+}
+
+// Insert between (after position pos)
+node* ins_bet(node* head, int data, int pos) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return head;
+    }
+
+    node* ptr = (node*)malloc(sizeof(node));
+    ptr->data = data;
+
+    node* p = head;
+    int i = 1;
+
+    while (i < pos && p->next != head) {
+        p = p->next;
+        i++;
+    }
+
+    ptr->next = p->next;
+    p->next = ptr;
+
+    return head;
+}
+
+// Delete at beginning
+node* del_beg(node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    if (head->next == head) { // Only one node
+        free(head);
+        return NULL;
+    }
+
+    node* p = head;
+    while (p->next != head) {
+        p = p->next;
+    }
+
+    node* temp = head;
+    p->next = head->next;
+    head = head->next;
+    free(temp);
+
+    return head;
+}
+
+// Delete at end
+node* del_end(node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    if (head->next == head) { // Only one node
+        free(head);
+        return NULL;
+    }
+
+    node* p = head;
+    node* q = head->next;
+
+    while (q->next != head) {
+        p = q;
+        q = q->next;
+    }
+
+    p->next = head;
+    free(q);
+
+    return head;
+}
+
+// Delete at specific position
+node* del_bet(node* head, int pos) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    if (pos == 1) return del_beg(head);
+
+    node* p = head;
+    node* q = head->next;
+    int i = 2;
+
+    while (i < pos && q->next != head) {
+        p = q;
+        q = q->next;
+        i++;
+    }
+
+    if (q->next == head && i < pos) {
+        printf("Position out of range.\n");
+        return head;
+    }
+
+    p->next = q->next;
+    free(q);
+
+    return head;
+}
+
+// Menu-driven program
+int main() {
+    node* head = NULL;
+    int choice, data, pos, n;
+
+    while (1) {
+        printf("\n--- Circular Linked List Menu ---\n");
+        printf("1. Create List\n");
+        printf("2. Display\n");
+        printf("3. Insert at Beginning\n");
+        printf("4. Insert at Position\n");
+        printf("5. Delete at Beginning\n");
+        printf("6. Delete at End\n");
+        printf("7. Delete at Position\n");
+        printf("0. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            printf("How many nodes? ");
+            scanf("%d", &n);
+            head = createList(n);
+            break;
+        case 2:
+            display(head);
+            break;
+        case 3:
+            printf("Enter data: ");
+            scanf("%d", &data);
+            head = add_at_beg(head, data);
+            break;
+        case 4:
+            printf("Enter data: ");
+            scanf("%d", &data);
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            head = ins_bet(head, data, pos);
+            break;
+        case 5:
+            head = del_beg(head);
+            break;
+        case 6:
+            head = del_end(head);
+            break;
+        case 7:
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            head = del_bet(head, pos);
+            break;
+        case 0:
+            printf("Exiting...\n");
+            exit(0);
+        default:
+            printf("Invalid choice!\n");
+        }
+    }
+    return 0;
+}

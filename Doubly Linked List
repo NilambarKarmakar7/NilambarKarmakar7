@@ -1,0 +1,267 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for DLL
+typedef struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+} node;
+
+// Create DLL with n nodes
+node* createList(int n) {
+    node *head = NULL, *temp, *newNode;
+    int data, i;
+
+    if (n <= 0) return NULL;
+
+    for (i = 0; i < n; i++) {
+        newNode = (node*)malloc(sizeof(node));
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &data);
+        newNode->data = data;
+        newNode->prev = newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            newNode->prev = temp;
+            temp = newNode;
+        }
+    }
+    return head;
+}
+
+// Display DLL forward
+void displayForward(node* head) {
+    node* temp = head;
+    if (temp == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    printf("DLL (forward): ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+// Display DLL backward
+void displayBackward(node* head) {
+    node* temp = head;
+    if (temp == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    while (temp->next != NULL) temp = temp->next; // Move to last
+
+    printf("DLL (backward): ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->prev;
+    }
+    printf("NULL\n");
+}
+
+// Insert at beginning
+node* insertBeg(node* head, int data) {
+    node* newNode = (node*)malloc(sizeof(node));
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = head;
+
+    if (head != NULL) head->prev = newNode;
+
+    head = newNode;
+    return head;
+}
+
+// Insert at end
+node* insertEnd(node* head, int data) {
+    node* newNode = (node*)malloc(sizeof(node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        newNode->prev = NULL;
+        return newNode;
+    }
+
+    node* temp = head;
+    while (temp->next != NULL) temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    return head;
+}
+
+// Insert at position
+node* insertPos(node* head, int data, int pos) {
+    if (pos <= 1) return insertBeg(head, data);
+
+    node* newNode = (node*)malloc(sizeof(node));
+    newNode->data = data;
+
+    node* temp = head;
+    int i = 1;
+
+    while (i < pos - 1 && temp != NULL) {
+        temp = temp->next;
+        i++;
+    }
+
+    if (temp == NULL) {
+        printf("Position out of range. Inserting at end.\n");
+        return insertEnd(head, data);
+    }
+
+    newNode->next = temp->next;
+    newNode->prev = temp;
+
+    if (temp->next != NULL) temp->next->prev = newNode;
+
+    temp->next = newNode;
+
+    return head;
+}
+
+// Delete at beginning
+node* deleteBeg(node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    node* temp = head;
+    head = head->next;
+
+    if (head != NULL) head->prev = NULL;
+
+    free(temp);
+    return head;
+}
+
+// Delete at end
+node* deleteEnd(node* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    if (head->next == NULL) { // Only one node
+        free(head);
+        return NULL;
+    }
+
+    node* temp = head;
+    while (temp->next != NULL) temp = temp->next;
+
+    temp->prev->next = NULL;
+    free(temp);
+
+    return head;
+}
+
+// Delete at position
+node* deletePos(node* head, int pos) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    if (pos == 1) return deleteBeg(head);
+
+    node* temp = head;
+    int i = 1;
+
+    while (i < pos && temp != NULL) {
+        temp = temp->next;
+        i++;
+    }
+
+    if (temp == NULL) {
+        printf("Position out of range.\n");
+        return head;
+    }
+
+    if (temp->next != NULL) temp->next->prev = temp->prev;
+    if (temp->prev != NULL) temp->prev->next = temp->next;
+
+    free(temp);
+
+    return head;
+}
+
+// Menu-driven program
+int main() {
+    node* head = NULL;
+    int choice, data, pos, n;
+
+    while (1) {
+        printf("\n--- Doubly Linked List Menu ---\n");
+        printf("1. Create List\n");
+        printf("2. Display Forward\n");
+        printf("3. Display Backward\n");
+        printf("4. Insert at Beginning\n");
+        printf("5. Insert at End\n");
+        printf("6. Insert at Position\n");
+        printf("7. Delete at Beginning\n");
+        printf("8. Delete at End\n");
+        printf("9. Delete at Position\n");
+        printf("0. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            printf("How many nodes? ");
+            scanf("%d", &n);
+            head = createList(n);
+            break;
+        case 2:
+            displayForward(head);
+            break;
+        case 3:
+            displayBackward(head);
+            break;
+        case 4:
+            printf("Enter data: ");
+            scanf("%d", &data);
+            head = insertBeg(head, data);
+            break;
+        case 5:
+            printf("Enter data: ");
+            scanf("%d", &data);
+            head = insertEnd(head, data);
+            break;
+        case 6:
+            printf("Enter data: ");
+            scanf("%d", &data);
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            head = insertPos(head, data, pos);
+            break;
+        case 7:
+            head = deleteBeg(head);
+            break;
+        case 8:
+            head = deleteEnd(head);
+            break;
+        case 9:
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            head = deletePos(head, pos);
+            break;
+        case 0:
+            printf("Exiting...\n");
+            exit(0);
+        default:
+            printf("Invalid choice!\n");
+        }
+    }
+    return 0;
+}

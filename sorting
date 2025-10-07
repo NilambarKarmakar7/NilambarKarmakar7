@@ -1,0 +1,103 @@
+#include <stdio.h>
+void merge(int arr[], int low, int mid, int high){
+    int temp[high-low+1];
+    int left = low;
+    int right = mid+1;
+    int k = 0;
+    while (left<=mid && right<=high){
+        if (arr[left]<=arr[right]){
+            temp[k]=arr[left];
+            k++, left++ ;
+        } else {
+            temp[k]=arr[right];
+            k++, right++;
+        }
+    }
+    while (left<=mid){
+        temp[k]=arr[left];
+        k++, left++ ; 
+    }
+    while (right<=high){
+        temp[k]=arr[right];
+        k++, right++ ;
+    }
+    for (int i =0; i<k; i++){
+        arr[low+i]=temp[i];
+    }
+}
+void merge_sort(int arr[], int low, int high){
+    if (low>=high){
+        return;
+    }
+    int mid = (low+high)/2;
+    merge_sort(arr,low,mid);
+    merge_sort(arr,mid+1,high);
+    merge(arr,low,mid,high);
+}
+
+void selection_sort(int arr[], int n){
+    for (int i =0; i<=n-2; i++){
+        int min = i;
+        for (int j = i+1; j<=n-1; j++){
+            if (arr[i]>=arr[j]){
+                int temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+            }
+        }
+    }
+}
+
+void bubble_sort(int arr[], int n){
+    for (int i = 0; i<=n-2; i++){
+        for (int j=0; j<n-i-1; j++){
+            if (arr[j]>arr[j+1]){
+                int temp = arr[j+1];
+                arr[j+1] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+void insertion_sort(int arr[], int n){
+    for (int i = 0; i<=n-1; i++){
+        int j = i;
+        while (j>0 && arr[j-1]>arr[j]){
+            int temp = arr[j];
+            arr[j] = arr[j-1];
+            arr[j-1] = temp;
+            j--;
+        }
+    }
+}
+int main() {
+    int arr[9]={5,18,29,9,92,65,48,48,1};
+    int choice;
+    printf("1. Selection Sort\n");
+    printf("2. Bubble Sort\n");
+    printf("3. Insertion Sort\n");
+    printf("4. Merge Sort\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+    switch(choice){
+        case 1:
+        selection_sort(arr,9);
+        break;
+        case 2:
+        bubble_sort(arr,9);
+        break;
+        case 3:
+        insertion_sort(arr, 9);
+        break;
+        case 4:
+        merge_sort(arr, 0, 8);
+        break;
+        default:
+        printf("Wrong choice\n");
+    }
+    for (int i =0; i<9; i++){
+        printf("%d ",arr[i]);
+    }
+    return 0;
+}

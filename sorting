@@ -1,39 +1,4 @@
 #include <stdio.h>
-void merge(int arr[], int low, int mid, int high){
-    int temp[high-low+1];
-    int left = low;
-    int right = mid+1;
-    int k = 0;
-    while (left<=mid && right<=high){
-        if (arr[left]<=arr[right]){
-            temp[k]=arr[left];
-            k++, left++ ;
-        } else {
-            temp[k]=arr[right];
-            k++, right++;
-        }
-    }
-    while (left<=mid){
-        temp[k]=arr[left];
-        k++, left++ ; 
-    }
-    while (right<=high){
-        temp[k]=arr[right];
-        k++, right++ ;
-    }
-    for (int i =0; i<k; i++){
-        arr[low+i]=temp[i];
-    }
-}
-void merge_sort(int arr[], int low, int high){
-    if (low>=high){
-        return;
-    }
-    int mid = (low+high)/2;
-    merge_sort(arr,low,mid);
-    merge_sort(arr,mid+1,high);
-    merge(arr,low,mid,high);
-}
 
 void selection_sort(int arr[], int n){
     for (int i =0; i<=n-2; i++){
@@ -71,14 +36,88 @@ void insertion_sort(int arr[], int n){
         }
     }
 }
+
+
+void merge(int arr[], int low, int mid, int high){
+    int temp[high-low+1];
+    int left = low;
+    int right = mid+1;
+    int k = 0;
+    while (left<=mid && right<=high){
+        if (arr[left]<=arr[right]){
+            temp[k]=arr[left];
+            k++, left++ ;
+        } else {
+            temp[k]=arr[right];
+            k++, right++;
+        }
+    }
+    while (left<=mid){
+        temp[k]=arr[left];
+        k++, left++ ; 
+    }
+    while (right<=high){
+        temp[k]=arr[right];
+        k++, right++ ;
+    }
+    for (int i =0; i<k; i++){
+        arr[low+i]=temp[i];
+    }
+}
+void merge_sort(int arr[], int low, int high){
+    if (low>=high){
+        return;
+    }
+    int mid = (low+high)/2;
+    merge_sort(arr,low,mid);
+    merge_sort(arr,mid+1,high);
+    merge(arr,low,mid,high);
+}
+
+
+int partition(int arr[], int low, int high){
+    int pivot = arr[low];
+    int i = low;
+    int j = high;
+    while (i<j) {
+        while (arr[i]<=pivot && i<=high-1){
+            i++;
+        }
+        while (arr[j]>pivot && j>=low+1){
+            j--;
+        }
+        if (i<j) {
+            int temp = arr[j];
+            arr[j] = arr[i];
+            arr[i] = temp;
+        }
+    }
+    int temp = arr[j];
+    arr[j] = arr[low];
+    arr[low] = temp;
+    return j;
+}
+void quick_sort(int arr[], int low, int high){
+    if (low<high){
+        int p_ind = partition(arr,low,high);
+        quick_sort(arr,low,p_ind-1);
+        quick_sort(arr,p_ind+1,high);
+    }
+}
+
 int main() {
     int arr[9]={5,18,29,9,92,65,48,48,1};
+    printf("Array before sorting :\n");
+    for (int i =0; i<9; i++){
+        printf("%d ",arr[i]);
+    }
     int choice;
-    printf("1. Selection Sort\n");
+    printf("\n\n1. Selection Sort\n");
     printf("2. Bubble Sort\n");
     printf("3. Insertion Sort\n");
     printf("4. Merge Sort\n");
-    printf("Enter your choice: ");
+    printf("5. Quick Sort\n");
+    printf("Enter the choice for sorting algorithm : ");
     scanf("%d", &choice);
     switch(choice){
         case 1:
@@ -92,10 +131,13 @@ int main() {
         break;
         case 4:
         merge_sort(arr, 0, 8);
+        case 5:
+        quick_sort(arr,0,8);
         break;
         default:
         printf("Wrong choice\n");
     }
+    printf("\nArray after sorting : \n");
     for (int i =0; i<9; i++){
         printf("%d ",arr[i]);
     }

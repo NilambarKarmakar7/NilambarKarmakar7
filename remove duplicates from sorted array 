@@ -1,0 +1,20 @@
+#include <stdio.h>
+int duplicates(int arr[], int n){
+    int j=0;
+    for(int i=0; i<n-1; i++){
+        if (arr[i]!=arr[i+1]){
+            arr[j]=arr[i];
+            j++;
+        }
+    }
+    arr[j]=arr[n-1];
+    return j+1;
+}
+int main() {
+    int arr[]={2,2,4,5,5,36,80,80};
+    int n=duplicates(arr, 8);
+    for(int i=0; i<n; i++){
+        printf("%d ",arr[i]);
+    }
+    return 0;
+}
